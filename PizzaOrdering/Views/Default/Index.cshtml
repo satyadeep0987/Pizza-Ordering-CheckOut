@@ -1,0 +1,339 @@
+﻿@model PizzaOrdering.Models.CustomerCheckOut
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    string l = "N/A";
+    if (TempData["dno"] != null)
+    {
+        l = TempData["dno"].ToString();
+    }
+
+
+    <div class="row">
+        <div class="col">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search By Contact Number" aria-label="Search" name="search">
+        </div>
+        <div class="col">
+            <input type="submit" value="Check" name="command" />
+  
+
+        </div>
+    </div>
+
+
+    <hr />
+
+    if (Session["data"] != null)
+    {
+        PizzaOrdering.Models.CustomerCheckOut c = (PizzaOrdering.Models.CustomerCheckOut)Session["Data"];
+        <div class="input-group mb-3">
+            <div class="col">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Customer Name</span>
+                </div>
+                <div class="form-control" aria-label="Name" aria-describedby="basic-addon1">
+                    @Html.TextBox("txtcname", c.cname)
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Customer Contact</span>
+                </div>
+                <div class="form-control" aria-label="Contact" aria-describedby="basic-addon1">
+                    @Html.TextBox("txtcontact", c.contact)
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col"></th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Farmhouse</td>
+                        <td><img src="~/Image/p.jpg" alt="pic1" height=100 width=100></td>
+                        <td>
+                            <div class="form-group" onchange="addPrice('IsSmall1','IsMedium1','IsLarge1','v1',200)">
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size", "small",
+                                        new { id = "IsSmall1" }) Small
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size", "medium",
+                                         new { id = "IsMedium1" }) Medium
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size", "Large",
+                                         new { id = "IsLarge1" }) Large
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="number" id="p1" onchange="add('p1','v1','r1'),addResult('r1')" /></td>
+                        <td><input type="text" id="v1" disabled /></td>
+                        <td><input type="text" id="r1" disabled /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>veg extravaganza</td>
+                        <td><img src="~/Image/p1.jpg" alt="pic1" height=100 width=100></td>
+                        <td>
+                            <div class="form-group" onchange="addPrice('IsSmall2','IsMedium2','IsLarge2','v2',300)">
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size2", "small",
+                                        new { id = "IsSmall2" }) Small
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size2", "medium",
+                                         new { id = "IsMedium2" }) Medium
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size2", "Large",
+                                         new { id = "IsLarge2" }) Large
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="number" id="p2" onchange="add('p2','v2','r2'),addResult('r2')" /></td>
+                        <td><input type="text" id="v2" disabled /></td>
+                        <td><input type="text" id="r2" disabled /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Non-Veg BBQ</td>
+                        <td><img src="~/Image/p3.jpg" alt="pic1" height=100 width=100></td>
+                        <td>
+                            <div class="form-group" onchange="addPrice('IsSmall3','IsMedium3','IsLarge3','v3',400)">
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size3", "small",
+                                        new { id = "IsSmall3" }) Small
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size3", "medium",
+                                         new { id = "IsMedium3" }) Medium
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size3", "Large",
+                                         new { id = "IsLarge3" }) Large
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="number" id="p3" onchange="add('p3','v3','r3'),addResult('r3')" /></td>
+                        <td><input type="text" id="v3" disabled /></td>
+                        <td><input type="text" id="r3" disabled /></td>
+                    </tr>
+                    <tr>
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><input type="submit" value="CheckOut" name="command" /></td>
+                        <td>Total Price : </td>
+                        <td><input type="text" name="txttotal" id="total" /></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <script>
+            function add(id1, id2, id3) {
+                var n = document.getElementById(id1).value;
+                var c = document.getElementById(id2).value;
+                n = n * c;
+                document.getElementById(id3).value = n;
+            }
+
+            function addPrice(id1, id2, id3, id4, a) {
+                if (document.getElementById(id1).checked)
+                    document.getElementById(id4).value = a - 50;
+                if (document.getElementById(id2).checked)
+                    document.getElementById(id4).value = a;
+                if (document.getElementById(id3).checked)
+                    document.getElementById(id4).value = a + 50;
+            }
+
+            var ttl = 0;
+            function addResult(id) {
+                var v = document.getElementById(id);
+                ttl = ttl + parseInt(v.value);
+                document.getElementById('total').value = ttl;
+            }
+
+
+
+        </script>
+    }
+    else
+    {
+
+        <div class="input-group mb-3">
+            <div class="col">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Customer Name</span>
+                </div>
+                <div class="form-control" aria-label="Name" aria-describedby="basic-addon1">
+                    @Html.TextBox("txtcname")
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Customer Contact</span>
+                </div>
+                <div class="form-control" aria-label="Contact" aria-describedby="basic-addon1">
+                    @Html.TextBox("txtcontact", l)
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col"></th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Farmhouse</td>
+                        <td><img src="~/Image/p.jpg" alt="pic1" height=100 width=100></td>
+                        <td>
+                            <div class="form-group" onchange="addPrice('IsSmall1','IsMedium1','IsLarge1','v1',200)">
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size", "small",
+                                        new { id = "IsSmall1" }) Small
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size", "medium",
+                                         new { id = "IsMedium1" }) Medium
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size", "Large",
+                                         new { id = "IsLarge1" }) Large
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="number" id="p1" onchange="add('p1','v1','r1'),addResult('r1')" /></td>
+                        <td><input type="text" id="v1" disabled /></td>
+                        <td><input type="text" id="r1" disabled /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>veg extravaganza</td>
+                        <td><img src="~/Image/p1.jpg" alt="pic1" height=100 width=100></td>
+                        <td>
+                            <div class="form-group" onchange="addPrice('IsSmall2','IsMedium2','IsLarge2','v2',300)">
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size2", "small",
+                                        new { id = "IsSmall2" }) Small
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size2", "medium",
+                                         new { id = "IsMedium2" }) Medium
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size2", "Large",
+                                         new { id = "IsLarge2" }) Large
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="number" id="p2" onchange="add('p2','v2','r2'),addResult('r2')" /></td>
+                        <td><input type="text" id="v2" disabled /></td>
+                        <td><input type="text" id="r2" disabled /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Non-Veg BBQ</td>
+                        <td><img src="~/Image/p3.jpg" alt="pic1" height=100 width=100></td>
+                        <td>
+                            <div class="form-group" onchange="addPrice('IsSmall3','IsMedium3','IsLarge3','v3',400)">
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size3", "small",
+                                        new { id = "IsSmall3" }) Small
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size3", "medium",
+                                         new { id = "IsMedium3" }) Medium
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButton("size3", "Large",
+                                         new { id = "IsLarge3" }) Large
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="number" id="p3" onchange="add('p3','v3','r3'),addResult('r3')" /></td>
+                        <td><input type="text" id="v3" disabled /></td>
+                        <td><input type="text" id="r3" disabled /></td>
+                    </tr>
+                    <tr>
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><input type="submit" value="CheckOut" name="command" /></td>
+                        <td>Total Price : </td>
+                        <td><input type="text" name="txttotal" id="total" /></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <script>
+            function add(id1, id2, id3) {
+                var n = document.getElementById(id1).value;
+                var c = document.getElementById(id2).value;
+                n = n * c;
+                document.getElementById(id3).value = n;
+            }
+
+            function addPrice(id1, id2, id3, id4, a) {
+                if (document.getElementById(id1).checked)
+                    document.getElementById(id4).value = a - 50;
+                if (document.getElementById(id2).checked)
+                    document.getElementById(id4).value = a;
+                if (document.getElementById(id3).checked)
+                    document.getElementById(id4).value = a + 50;
+            }
+
+            var ttl = 0;
+            function addResult(id) {
+                var v = document.getElementById(id);
+                ttl = ttl + parseInt(v.value);
+                document.getElementById('total').value = ttl;
+            }
+
+
+
+        </script>
+    }
+
+
+}
