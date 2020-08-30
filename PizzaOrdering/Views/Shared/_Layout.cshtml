@@ -11,13 +11,30 @@
 
 
 <body>
-    <div>
-        <nav class="navbar navbar-light bg-dark justify-content-between fixed-top">
-            <a class="navbar-brand text-success">Pizza Counter</a>
-            
-        </nav>
-    </div>
-    <br/>
+
+ 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="@Url.Action("Index", "Default")">Pizza Counter</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link" href="@Url.Action("CustomerList", "Default")" >Customer List</a>
+          </li>
+          
+        </ul>
+        <span class="navbar-text">
+          Take Your Pizza
+        </span>
+      </div>
+    </nav>
+    
+
+
+
+    <br />
 
     <div class="container body-content">
         @RenderBody()

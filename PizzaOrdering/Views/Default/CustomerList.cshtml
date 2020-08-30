@@ -1,0 +1,40 @@
+﻿@using PizzaOrdering.Models
+@{
+    ViewBag.Title = "CustomerList";
+}
+
+<h2>CustomerList</h2>
+
+@using (Html.BeginForm())
+{
+    if (Session["cust"] != null)
+    {
+        List<CustomerCheckOut> m = (List<CustomerCheckOut>)Session["cust"];
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr> 
+                        <th scope="col"> Customer Name</th>
+                        <th scope="col"> Contact No.</th>
+                        <th scope="col"> No Of times Order Made</th>
+                        <th scope="col"> Total Amount </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var v in m)
+                    {
+                        <tr>
+                            <td>@v.cname</td>
+                            <td>@v.contact</td>
+                            <td>@v.orders</td>
+                            <td>@v.total</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}
+
+
+

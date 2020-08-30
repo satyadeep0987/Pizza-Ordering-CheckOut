@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using PizzaOrdering.Models;
@@ -76,6 +77,34 @@ namespace PizzaOrdering.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult CustomerList()
+        {
+            List<CustomerCheckOut> model = new List<CustomerCheckOut>();
+            var query = from c in db.CustomerCheckOuts
+                        select new
+                        {
+                            name = c.cname,
+                            ct = c.contact,
+                            qt = c.orders,
+                            price = c.total,
+                        };
+
+            foreach(var q in query)
+            {
+                CustomerCheckOut m = new CustomerCheckOut();
+                m.cname = q.name;
+                m.contact = q.ct;
+                m.orders = q.qt;
+                m.total = q.price;
+                model.Add(m);
+            }
+           
+            Session["cust"] = model;
+
+            return View();
+        }
        
+
     }
 }
